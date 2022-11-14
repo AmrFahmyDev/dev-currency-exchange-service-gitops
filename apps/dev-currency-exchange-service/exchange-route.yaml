@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: exchange
+  name: exchange
+  namespace: exchange
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: exchange
+    weight: 100
