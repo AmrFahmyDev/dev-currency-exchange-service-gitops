@@ -5,7 +5,7 @@ metadata:
   labels:
     app: exchange
   name: exchange
-  namespace: exchange
+  namespace: bank-services
 spec:
   ports:
   - port: 8080
