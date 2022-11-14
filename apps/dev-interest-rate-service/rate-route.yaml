@@ -11,4 +11,4 @@ spec:
   to:
     kind: Service
     name: interest-rate
-    weight: 100
+    weight: 200

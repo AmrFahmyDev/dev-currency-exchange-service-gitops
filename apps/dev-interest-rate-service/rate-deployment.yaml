@@ -17,7 +17,7 @@ spec:
         app: interest-rate
     spec:
       containers:
-        - image: quay.io/amr_fahmy/dev-interest-rate-service:v01
+        - image: quay.io/amr_fahmy/dev-interest-rate-service:v02
           name: interest-rate
           env:
             - name: DATABASE_HOST
