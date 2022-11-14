@@ -17,35 +17,41 @@ spec:
         app: exchange
     spec:
       containers:
-      - image: quay.io/amr_fahmy/dev-currency-exchange-service:v01
-        name: exchange
-        env:
-          - name: DATABASE_HOST
-            secretKeyRef:
-              name: exchange-secret
-              key: DATABASE_HOST
-          - name: DATABASE_PORT
-            secretKeyRef:
-              name: exchange-secret
-              key: DATABASE_PORT
-          - name: DATABASE_NAME
-            secretKeyRef:
-              name: exchange-secret
-              key: DATABASE_NAME
-          - name: DATABASE_USER
-            secretKeyRef:
-              name: exchange-secret
-              key: DATABASE_USER
-          - name: DATABASE_PASSWORD
-            secretKeyRef:
-              name: exchange-secret
-              key: DATABASE_PASSWORD
-          - name: REDIS_PORT
-            value: "6379"
-          - name: REDIS_SVC
-            value: redis        
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "200m"        
+        - image: quay.io/amr_fahmy/dev-currency-exchange-service:v01
+          name: exchange
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: exchange-secret
+                  key: DATABASE_HOST
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: exchange-secret
+                  key: DATABASE_PORT
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: exchange-secret
+                  key: DATABASE_NAME
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: exchange-secret
+                  key: DATABASE_USER
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: exchange-secret
+                  key: DATABASE_PASSWORD
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_SVC
+              value: redis
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
 ---
+
