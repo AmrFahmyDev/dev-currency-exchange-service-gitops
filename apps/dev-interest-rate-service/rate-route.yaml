@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: interest-rate
+  name: interest-rate
+  namespace: bank-services
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: interest-rate
+    weight: 100
