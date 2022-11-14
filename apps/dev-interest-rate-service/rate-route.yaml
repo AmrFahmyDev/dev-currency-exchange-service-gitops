@@ -7,7 +7,7 @@ metadata:
   namespace: bank-services
 spec:
   port:
-    targetPort: 8080
+    targetPort: 3000
   to:
     kind: Service
     name: interest-rate

@@ -8,9 +8,9 @@ metadata:
   namespace: bank-services
 spec:
   ports:
-  - port: 3000
+  - port: 8080
     protocol: TCP
-    targetPort: 8080
+    targetPort: 3000
   selector:
     app: exchange
 ---
