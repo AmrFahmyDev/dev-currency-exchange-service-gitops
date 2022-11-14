@@ -8,7 +8,7 @@ metadata:
   namespace: bank-services
 spec:
   ports:
-  - port: 8080
+  - port: 3000
     protocol: TCP
     targetPort: 8080
   selector:
