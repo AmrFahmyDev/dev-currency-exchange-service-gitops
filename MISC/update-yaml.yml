@@ -1,0 +1,22 @@
+#update-yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-yaml
+spec:
+  params:  
+  - name: yaml-path
+  - name: appImage
+  - name: buildRevision
+  workspaces:
+  - name: config-workspace
+  steps:
+  - name: update-deploymwnt-image
+    image: alpine/git:v2.26.2
+    workingDir: "$(workspaces.config-source.path)/$(inputs.params.yaml-path)"
+    script: |
+      #!/usr/bin/env sh
+      set -e
+
+      echo "updating $(inputs.params.yaml-path) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
+      sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" app.yaml

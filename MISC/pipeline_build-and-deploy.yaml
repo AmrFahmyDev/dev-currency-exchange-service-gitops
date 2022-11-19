@@ -1,0 +1,149 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  workspaces:
+  - name: shared-workspace
+  - name: config-workspace
+  params:
+  - name: deployment-name
+    type: string
+    description: name of the deployment to be patched
+    default: ''
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+  - name: config-git-url
+    description: The application config (GitOps) repository
+  - name: git-revision
+    type: string
+    description: revision to be used from repo of the code for deployment
+    default: main
+  - name: IMAGE
+    type: string
+    description: image to be build from the code
+  - name: IMAGE-TAG
+    type: string
+    description: image tag to be build
+    default: latest
+  - name: config-yaml-path
+    type: string
+    description: deployment.yaml path
+  - name: GIT-SCRIPT
+    type: string
+    default: |
+      git add .
+      git commit --allow-empty -m "[tekton] updating image"
+      eval $(ssh-agent)
+      git push origin main
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.git-revision)
+  - name: build-image
+    taskRef:
+      name: buildah
+      kind: ClusterTask
+    params:
+    - name: IMAGE
+      value: $(params.IMAGE):$(params.IMAGE-TAG)    
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    runAfter:
+    - fetch-repository
+  - name: fetch-config-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: config-workspace
+    params:
+    - name: url
+      value: $(params.config-git-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.git-revision)
+    runAfter:
+    - build-image
+  - name: update-deploymwnt-image
+    taskRef:
+      name: update-yaml
+    workspaces:
+    - name: output
+      workspace: config-workspace
+    params:
+    - name: yaml-path
+      value: $(params.config-yaml-path)
+    - name: appImage
+      value: $(params.IMAGE)    
+    - name: buildRevision
+      value: $(params.IMAGE-TAG) 
+    runAfter:
+    - fetch-config-repository
+  - name: push-config-repository
+    taskRef:
+      name: git-cli
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: config-workspace
+    params:
+    - name: GIT_SCRIPT
+      value: $(params.GIT-SCRIPT)
+    - name: GIT_USER_EMAIL
+      value: tekton@tekton.dev    
+    - name: GIT_USER_NAME
+      value: Tekton Pipeline
+    runAfter:
+    - update-deploymwnt-image
+
+
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+#  - name: apply-manifests
+#    taskRef:
+#      name: apply-manifests
+#    workspaces:
+#    - name: source
+#      workspace: shared-workspace
+#    runAfter:
+#    - build-image
+#  - name: update-deployment
+#    taskRef:
+#      name: update-deployment
+#    params:
+#    - name: deployment
+#      value: $(params.deployment-name)
+#    - name: IMAGE
+#      value: $(params.IMAGE)
+#    runAfter:
+#    - apply-manifests
