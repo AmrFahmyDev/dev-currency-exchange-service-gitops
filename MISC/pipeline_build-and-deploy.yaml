@@ -5,7 +5,6 @@ metadata:
 spec:
   workspaces:
   - name: shared-workspace
-  - name: config-workspace
   params:
   - name: deployment-name
     type: string
@@ -71,8 +70,8 @@ spec:
       name: git-clone
       kind: ClusterTask
     workspaces:
-    - name: output
-      workspace: config-workspace
+    - name: shared-workspace
+      workspace: shared-workspace
     params:
     - name: url
       value: $(params.config-git-url)
@@ -88,8 +87,8 @@ spec:
     taskRef:
       name: update-yaml
     workspaces:
-    - name: output
-      workspace: config-workspace
+    - name: shared-workspace
+      workspace: shared-workspace
     params:
     - name: yaml-path
       value: $(params.config-yaml-path)
@@ -104,8 +103,8 @@ spec:
       name: git-cli
       kind: ClusterTask
     workspaces:
-    - name: output
-      workspace: config-workspace
+    - name: shared-workspace
+      workspace: shared-workspace
     params:
     - name: GIT_SCRIPT
       value: $(params.GIT-SCRIPT)
