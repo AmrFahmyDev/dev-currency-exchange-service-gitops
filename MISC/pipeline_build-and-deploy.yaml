@@ -82,7 +82,22 @@ spec:
     - name: revision
       value: $(params.git-revision)
     runAfter:
-    - build-image  
+    - build-image
+  - name: update-deploymwnt-image
+    taskRef:
+      name: update-yaml
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: yaml-path
+      value: $(params.config-yaml-path)
+    - name: appImage
+      value: $(params.IMAGE)    
+    - name: buildRevision
+      value: $(params.IMAGE-TAG) 
+    runAfter:
+    - fetch-config-repository  
   - name: push-config-repository
     taskRef:
       name: git-cli
@@ -100,25 +115,11 @@ spec:
     - name: GIT_USER_NAME
       value: Tekton Pipeline
     runAfter:
-    - fetch-config-repository
+    - update-deploymwnt-image
 
 
 
-    #- name: update-deploymwnt-image
-    #taskRef:
-    #  name: update-yaml
-    #workspaces:
-    #- name: output
-    #  workspace: shared-workspace
-    #params:
-    #- name: yaml-path
-    #  value: $(params.config-yaml-path)
-    #- name: appImage
-    #  value: $(params.IMAGE)    
-    #- name: buildRevision
-    #  value: $(params.IMAGE-TAG) 
-    #runAfter:
-    #- fetch-config-repository
+    
 
 
     
