@@ -61,7 +61,7 @@ spec:
     - name: IMAGE
       value: $(params.IMAGE):$(params.IMAGE-TAG)    
     workspaces:
-    - name: source
+    - name: output
       workspace: shared-workspace
     runAfter:
     - fetch-repository
@@ -70,7 +70,7 @@ spec:
       name: git-clone
       kind: ClusterTask
     workspaces:
-    - name: shared-workspace
+    - name: output
       workspace: shared-workspace
     params:
     - name: url
@@ -87,7 +87,7 @@ spec:
     taskRef:
       name: update-yaml
     workspaces:
-    - name: shared-workspace
+    - name: output
       workspace: shared-workspace
     params:
     - name: yaml-path
@@ -103,7 +103,7 @@ spec:
       name: git-cli
       kind: ClusterTask
     workspaces:
-    - name: shared-workspace
+    - name: output
       workspace: shared-workspace
     params:
     - name: GIT_SCRIPT

@@ -19,4 +19,4 @@ spec:
       set -e
 
       echo "updating $(inputs.params.yaml-path) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
-      sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" app.yaml
+      sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" deployment.yaml
