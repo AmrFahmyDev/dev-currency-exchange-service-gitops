@@ -87,7 +87,7 @@ spec:
     taskRef:
       name: update-yaml
     workspaces:
-    - name: output
+    - name: shared-workspace
       workspace: shared-workspace
     params:
     - name: yaml-path
