@@ -32,8 +32,6 @@ spec:
   - name: GIT-SCRIPT
     type: string
     default: |
-      echo "updating deployment.yaml image to quay.io/amr_fahmy/dev-currency-exchange-service:v03"
-      sed -i "s#quay.io/amr_fahmy/dev-currency-exchange-service:[a-zA-Z0-9]\\+#quay.io/amr_fahmy/dev-currency-exchange-service:v03#" deployment.yaml
       git add .
       git commit --allow-empty -m "[tekton] updating image"
       eval $(ssh-agent)
@@ -93,6 +91,8 @@ spec:
     - name: source
       workspace: shared-workspace
     params:
+    - name: BASE_IMAGE
+      value: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:158b0fda662e5bc05e2ff46f6864a8620bbb45e1a2388a456de43aad6e72d8f7
     - name: GIT_SCRIPT
       value: $(params.GIT-SCRIPT)
     - name: GIT_USER_EMAIL
