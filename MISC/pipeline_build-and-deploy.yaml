@@ -32,6 +32,8 @@ spec:
   - name: GIT-SCRIPT
     type: string
     default: |
+      echo "updating deployment.yaml image to quay.io/amr_fahmy/dev-currency-exchange-service:v03"
+      sed -i "s#quay.io/amr_fahmy/dev-currency-exchange-service:[a-zA-Z0-9]\\+#quay.io/amr_fahmy/dev-currency-exchange-service:v03#" deployment.yaml
       git add .
       git commit --allow-empty -m "[tekton] updating image"
       eval $(ssh-agent)
@@ -82,28 +84,13 @@ spec:
     - name: revision
       value: $(params.git-revision)
     runAfter:
-    - build-image
-  - name: update-deploymwnt-image
-    taskRef:
-      name: update-yaml
-    workspaces:
-    - name: output
-      workspace: shared-workspace
-    params:
-    - name: yaml-path
-      value: $(params.config-yaml-path)
-    - name: appImage
-      value: $(params.IMAGE)    
-    - name: buildRevision
-      value: $(params.IMAGE-TAG) 
-    runAfter:
-    - fetch-config-repository
+    - build-image  
   - name: push-config-repository
     taskRef:
       name: git-cli
       kind: ClusterTask
     workspaces:
-    - name: output
+    - name: source
       workspace: shared-workspace
     params:
     - name: GIT_SCRIPT
@@ -113,7 +100,25 @@ spec:
     - name: GIT_USER_NAME
       value: Tekton Pipeline
     runAfter:
-    - update-deploymwnt-image
+    - fetch-config-repository
+
+
+
+    #- name: update-deploymwnt-image
+    #taskRef:
+    #  name: update-yaml
+    #workspaces:
+    #- name: output
+    #  workspace: shared-workspace
+    #params:
+    #- name: yaml-path
+    #  value: $(params.config-yaml-path)
+    #- name: appImage
+    #  value: $(params.IMAGE)    
+    #- name: buildRevision
+    #  value: $(params.IMAGE-TAG) 
+    #runAfter:
+    #- fetch-config-repository
 
 
     
