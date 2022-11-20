@@ -61,7 +61,7 @@ spec:
     - name: IMAGE
       value: $(params.IMAGE):$(params.IMAGE-TAG)    
     workspaces:
-    - name: output
+    - name: source
       workspace: shared-workspace
     runAfter:
     - fetch-repository
