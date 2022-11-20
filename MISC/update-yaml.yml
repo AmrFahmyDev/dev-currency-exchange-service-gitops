@@ -13,7 +13,7 @@ spec:
   steps:
   - name: update-deploymwnt-image
     image: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:158b0fda662e5bc05e2ff46f6864a8620bbb45e1a2388a456de43aad6e72d8f7
-    workingDir: "$(workspaces.config-source.path)/$(inputs.params.yaml-path)"
+    workingDir: "$(workspaces.source.path)/$(inputs.params.yaml-path)"
     script: |
       #!/usr/bin/env sh
       set -e
