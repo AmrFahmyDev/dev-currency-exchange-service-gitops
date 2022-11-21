@@ -16,5 +16,5 @@ spec:
     workingDir: "$(workspaces.source.path)/$(params.yaml-path)"
     script: |
       #!/bin/sh
-      echo "updating $(inputs.params.yaml-path) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
-      sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" deployment.yaml
+      echo "updating $(params.yaml-path) image to $(params.appImage):$(params.buildRevision)"
+      sed -i "s#$(params.appImage):[a-zA-Z0-9]\\+#$(params.appImage):$(params.buildRevision)#" deployment.yaml
