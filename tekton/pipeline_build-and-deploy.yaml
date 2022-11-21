@@ -29,6 +29,7 @@ spec:
   - name: GIT-SCRIPT
     type: string
     default: |
+      git checkout -b main
       git add .
       git commit --allow-empty -m "[tekton] updating image"
       eval $(ssh-agent)
