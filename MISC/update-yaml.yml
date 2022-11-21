@@ -12,7 +12,7 @@ spec:
   - name: shared-workspace
   steps:
   - name: update-deploymwnt-image
-    image: alpine/git:v2.26.2
+    image: registry.access.redhat.com/ubi8/ubi:8.0
     workingDir: "$(workspaces.source.path)/$(params.yaml-path)"
     script: |
       #!/usr/bin/env sh
