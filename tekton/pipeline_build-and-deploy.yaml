@@ -1,16 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy
+  name: build-and-push
 spec:
   workspaces:
   - name: shared-workspace
   - name: basic-auth
   params:
-  - name: deployment-name
-    type: string
-    description: name of the deployment to be patched
-    default: ''
   - name: git-url
     type: string
     description: url of the git repo for the code of deployment
