@@ -9,14 +9,12 @@ spec:
   - name: appImage
   - name: buildRevision  
   workspaces:
-  - name: shared-workspace
+  - name: source
   steps:
   - name: update-deploymwnt-image
     image: registry.access.redhat.com/ubi8/ubi:8.0
     workingDir: "$(workspaces.source.path)/$(params.yaml-path)"
     script: |
-      #!/usr/bin/env sh
-      set -eu
-
+      #!/bin/sh
       echo "updating $(inputs.params.yaml-path) image to $(inputs.params.appImage):$(inputs.params.buildRevision)"
       sed -i "s#$(inputs.params.appImage):[a-zA-Z0-9]\\+#$(inputs.params.appImage):$(inputs.params.buildRevision)#" deployment.yaml
