@@ -1,0 +1,21 @@
+	
+	- oc login -u admin -p redhat api.ocp4.example.com:6443
+	- OC Console: https://console-openshift-console.apps.ocp4.example.com
+	- argoURL=$(oc get route openshift-gitops-server -n openshift-gitops -o jsonpath='{.spec.host}{"\n"}') //https://openshift-gitops-server-openshift-gitops.apps.ocp4.example.com
+	- argoPass=$(oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d) //os2OMXLPRk5wH6hVQu1bvNCfyAEc9leK
+	- argocd login --insecure --grpc-web $argoURL  --username admin --password $argoPass
+
+	- internal regestry: default-route-openshift-image-registry.apps.ocp4.example.com
+
+
+- tkn pipeline start build-and-deploy \
+	-w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
+	-w name=basic-auth,secret=my-basic-auth-secret,mountPath=/workspace/basic-auth \
+	-p git-url=https://github.com/AmrFahmyDev/dev-currency-exchange-service.git \
+	-p IMAGE=quay.io/amr_fahmy/dev-currency-exchange-service \
+	-p config-git-url=https://github.com/AmrFahmyDev/dev-gitops.git \
+	-p config-yaml-path=apps/dev-currency-exchange-service/ \
+	-p IMAGE-TAG=v03 \
+	--use-param-defaults --showlog
+
+
