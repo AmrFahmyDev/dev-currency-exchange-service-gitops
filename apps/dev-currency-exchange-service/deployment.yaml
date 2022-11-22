@@ -17,7 +17,7 @@ spec:
         app: exchange
     spec:
       containers:
-        - image: quay.io/amr_fahmy/dev-currency-exchange-service:v01
+        - image: quay.io/amr_fahmy/dev-currency-exchange-service:v02
           name: exchange
           env:
             - name: DATABASE_HOST
