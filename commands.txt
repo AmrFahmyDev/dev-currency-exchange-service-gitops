@@ -8,8 +8,8 @@
 	- internal regestry: default-route-openshift-image-registry.apps.ocp4.example.com
 
 
-- tkn pipeline start build-and-deploy \
-	-w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
+- tkn pipeline start build-and-push \
+	-w name=shared-workspace,volumeClaimTemplateFile=/home/student/dev-gitops/tekton/pvc.yml \
 	-w name=basic-auth,secret=my-basic-auth-secret,mountPath=/workspace/basic-auth \
 	-p git-url=https://github.com/AmrFahmyDev/dev-currency-exchange-service.git \
 	-p IMAGE=quay.io/amr_fahmy/dev-currency-exchange-service \
